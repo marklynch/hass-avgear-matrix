@@ -1,0 +1,25 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "unsupported_model": "Model is not currently supported"
+        },
+        "step": {
+            "user": {
+                "data": {
+                },
+                "data_description": {
+                    "host": "The hostname or IP address of your AVGear Matrix device."
+                },
+                "description": "Set up your AVGear Matrix connection details."
+            }
+        }
+    },
+    "entity": {
+        "select":{
+             "switch_input": {
+                "name": "Select Input"
+            }
+        }
+    }
+}

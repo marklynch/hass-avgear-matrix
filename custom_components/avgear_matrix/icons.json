@@ -1,0 +1,9 @@
+{
+  "entity": {
+    "select":{
+      "switch_input": {
+        "default": "mdi:video-switch-outline"
+      }
+    }
+  }
+}

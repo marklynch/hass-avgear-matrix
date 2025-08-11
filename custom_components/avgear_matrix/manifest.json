@@ -1,0 +1,13 @@
+{
+  "domain": "avgear_matrix",
+  "name": "AVGear Matrix",
+  "icon": "mdi:video-switch",
+  "codeowners": ["@marklynch"],
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/avgear_matrix",
+  "iot_class": "local_polling",
+  "requirements": [
+    "hdmimatrix==0.0.3"
+  ],
+  "version": "0.0.1"
+}

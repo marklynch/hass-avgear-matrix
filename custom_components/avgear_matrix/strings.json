@@ -1,0 +1,26 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Set up your AVGear Matrix connection details.",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]"
+        },
+        "data_description": {
+          "host": "The hostname or IP address of your AVGear Matrix device."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "unsupported_model": "Model is not currently supported"
+    }
+  },
+  "entity": {
+    "select":{
+      "switch_input": {
+        "name": "Select Input"
+      }
+    }
+  }
+}
