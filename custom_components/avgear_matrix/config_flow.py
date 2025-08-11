@@ -14,7 +14,7 @@ from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import callback
 
-from .const import DEFAULT_PORT, DOMAIN
+from .const import DEFAULT_PORT, DOMAIN, SUPPORTED_MODELS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ async def _validate_connection(host: str) -> bool:
         name = await matrix.get_device_name()
         # check the name
         _LOGGER.debug(f"Device found: {name}")
-        if "TMX44PRO" in name:
+        if name in SUPPORTED_MODELS:
             return True
 
     _LOGGER.warning(f"Device not supported: {name}")

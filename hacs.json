@@ -1,0 +1,8 @@
+{
+  "name": "AVGear Matrix",
+  "content_in_root": false,
+  "filename": "avgear_matrix",
+  "homeassistant": "2025.8.0",
+  "render_readme": true,
+  "iot_class": "local_polling"
+}

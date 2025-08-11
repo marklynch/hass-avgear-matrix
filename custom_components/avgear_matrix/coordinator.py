@@ -15,7 +15,6 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-
 type AVGearMatrixConfigEntry = ConfigEntry[AVGearMatrixDataUpdateCoordinator]
 
 
@@ -44,7 +43,6 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             update_interval=SCAN_INTERVAL,
         )
 
-        # host = entry.get("CONF_HOST", "wrong")
         _LOGGER.debug(f"CONF_HOST: {host}")
 
         # Create a unique device identifier

@@ -2,10 +2,10 @@ rules:
   # Bronze
   action-setup: todo
   appropriate-polling: todo
-  brands: todo
+  brands: inprogress
   common-modules: todo
   config-flow-test-coverage: todo
-  config-flow: todo
+  config-flow: done
   dependency-transparency: todo
   docs-actions: todo
   docs-high-level-description: todo
