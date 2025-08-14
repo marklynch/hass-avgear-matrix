@@ -48,10 +48,9 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         self._attr_device_info: DeviceInfo = DeviceInfo(
             identifiers={(DOMAIN, f"{coordinator.device_id}")},
             manufacturer="AVGear",
-            model="AVGear Model",
-            # name=output_num,
-            # sw_version=coordinator.info["version"],
-            sw_version="0.0.1",  # TODO - read from device
+            name=coordinator.device_info["name"],
+            model=coordinator.device_info["model"],
+            sw_version=coordinator.device_info["version"],
             # configuration_url=f"http://{coordinator.host}",  # Link to device config
         )
 

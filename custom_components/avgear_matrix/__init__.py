@@ -10,7 +10,6 @@ import logging
 from .const import DOMAIN
 from .coordinator import AVGearMatrixConfigEntry, AVGearMatrixDataUpdateCoordinator
 
-# PLATFORMS = [Platform.BINARY_SENSOR, Platform.BUTTON]
 PLATFORMS = [Platform.SELECT]
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,6 +40,10 @@ async def async_setup_entry(
 
     # TODO - what should we pass through instead of name?
     coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, name, host)
+    # Load static device info once during setup
+    await coordinator.async_get_device_info()
+
+    # Do first data refresh for dynamic data
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
 

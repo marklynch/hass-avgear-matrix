@@ -15,6 +15,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
+
 type AVGearMatrixConfigEntry = ConfigEntry[AVGearMatrixDataUpdateCoordinator]
 
 
@@ -43,10 +44,12 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             update_interval=SCAN_INTERVAL,
         )
 
+        # host = entry.get("CONF_HOST", "wrong")
         _LOGGER.debug(f"CONF_HOST: {host}")
 
         # Create a unique device identifier
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
+        self.device_info = None
 
     async def _async_update_data(self) -> dict[str, AsyncHDMIMatrix]:
         """Fetch data from AVGear Matrix."""
@@ -59,3 +62,29 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                 return video_status
         except OSError as error:
             raise UpdateFailed from error
+
+    async def async_get_device_info(self):
+        """Get static device information once."""
+        if self.device_info is None:
+            try:
+                # Load static info from device
+                async with self.matrix:
+                    name = await self.matrix.get_device_name()
+                    device_type = await self.matrix.get_device_type()
+                    version = await self.matrix.get_device_version()
+
+                self.device_info = {
+                    "name": name,
+                    "model": device_type,
+                    "manufacturer": "AVGear",
+                    "version": version,
+                }
+            except Exception as err:
+                _LOGGER.warning(f"Could not get device info: {err}")
+                self.device_info = {
+                    "name": "Unknown",
+                    "model": "Unknown",
+                    "manufacturer": "AVGear",
+                    "version": "Unknown",
+                }
+        return self.device_info
