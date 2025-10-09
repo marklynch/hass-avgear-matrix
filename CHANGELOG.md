@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2025-10-09
+### Added
+- Buttons for power on and power off
+
+### Changed
+- Use lazy variable evaluation for logging
+- Improve stability by adding asyncio locking
 
 ## [0.0.2] - 2025-08-14
 ### Added

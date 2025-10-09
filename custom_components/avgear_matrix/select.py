@@ -34,7 +34,7 @@ async def async_setup_entry(
 class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
     """Select entity for matrix output."""
 
-    def __init__(self, coordinator, output_num):
+    def __init__(self, coordinator, output_num) -> None:
         super().__init__(coordinator)
         self.output_num = output_num
         self._attr_unique_id = f"avgear_matrix_output_{output_num}"
