@@ -85,8 +85,11 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
             await self.coordinator.async_request_refresh()
 
         except ValueError:
-            _LOGGER.error(f"Invalid input option: {option}")
+            _LOGGER.error("Invalid input option: %s", option)
         except Exception as err:
             _LOGGER.error(
-                f"Failed to route input {option} to output {self.output_num}: {err}"
+                "Failed to route input %s to output %s: %s",
+                option,
+                self.output_num,
+                err,
             )

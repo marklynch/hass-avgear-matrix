@@ -45,7 +45,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         )
 
         # host = entry.get("CONF_HOST", "wrong")
-        _LOGGER.debug(f"CONF_HOST: {host}")
+        _LOGGER.debug("CONF_HOST: %s", host)
 
         # Create a unique device identifier
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
@@ -58,7 +58,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         try:
             async with self.matrix:
                 video_status = await self.matrix.get_video_status_parsed()
-                _LOGGER.debug(f"Video Status: {video_status}")
+                _LOGGER.debug("Video Status: %s", video_status)
                 return video_status
         except OSError as error:
             raise UpdateFailed from error
@@ -80,7 +80,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     "version": version,
                 }
             except Exception as err:
-                _LOGGER.warning(f"Could not get device info: {err}")
+                _LOGGER.warning("Could not get device info: %s", err)
                 self.device_info = {
                     "name": "Unknown",
                     "model": "Unknown",

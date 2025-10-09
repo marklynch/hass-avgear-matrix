@@ -23,7 +23,7 @@ async def async_setup_entry(
     _LOGGER.warning("Setup Entry")
     host = entry.data[CONF_HOST]
     port = entry.data[CONF_PORT]
-    _LOGGER.warning(f"Setup Entry {host} {port}")
+    _LOGGER.warning("Setup Entry %s %s", host, port)
 
     matrix = AsyncHDMIMatrix(
         host,

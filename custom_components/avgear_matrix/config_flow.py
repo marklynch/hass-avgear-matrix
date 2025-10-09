@@ -32,11 +32,11 @@ async def _validate_connection(host: str) -> bool:
     async with matrix:
         name = await matrix.get_device_name()
         # check the name
-        _LOGGER.debug(f"Device found: {name}")
+        _LOGGER.debug("Device found: %s", name)
         if name in SUPPORTED_MODELS:
             return True
 
-    _LOGGER.warning(f"Device not supported: {name}")
+    _LOGGER.warning("Device not supported: %s", name)
     return False
 
 
