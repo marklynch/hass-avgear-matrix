@@ -55,6 +55,11 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         # Lock to prevent concurrent matrix access
         self._matrix_lock = asyncio.Lock()
 
+    @property
+    def matrix_lock(self) -> asyncio.Lock:
+        """Return the matrix lock for external use."""
+        return self._matrix_lock
+
     async def _async_update_data(self) -> dict[str, AsyncHDMIMatrix]:
         """Fetch data from AVGear Matrix."""
         _LOGGER.warning("_async_update_data coordinator")

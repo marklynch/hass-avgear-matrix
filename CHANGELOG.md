@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2025-10-09
+### Changed
+- Fixed bug introduced with asyncio locking in 0.0.3
+
 ## [0.0.3] - 2025-10-09
 ### Added
 - Buttons for power on and power off
