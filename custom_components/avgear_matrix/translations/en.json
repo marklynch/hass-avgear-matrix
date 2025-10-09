@@ -20,6 +20,14 @@
              "switch_input": {
                 "name": "Select Input"
             }
+        },
+        "button": {
+            "power_on": {
+                "name": "Power On"
+            },
+            "power_off": {
+                "name": "Power Off"
+            }
         }
     }
 }
