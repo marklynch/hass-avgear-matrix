@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from hdmimatrix import AsyncHDMIMatrix
@@ -51,12 +52,15 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
         self.device_info = None
 
+        # Lock to prevent concurrent matrix access
+        self._matrix_lock = asyncio.Lock()
+
     async def _async_update_data(self) -> dict[str, AsyncHDMIMatrix]:
         """Fetch data from AVGear Matrix."""
         _LOGGER.warning("_async_update_data coordinator")
 
         try:
-            async with self.matrix:
+            async with self._matrix_lock, self.matrix:
                 video_status = await self.matrix.get_video_status_parsed()
                 _LOGGER.debug("Video Status: %s", video_status)
                 return video_status
@@ -68,7 +72,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         if self.device_info is None:
             try:
                 # Load static info from device
-                async with self.matrix:
+                async with self._matrix_lock, self.matrix:
                     name = await self.matrix.get_device_name()
                     device_type = await self.matrix.get_device_type()
                     version = await self.matrix.get_device_version()

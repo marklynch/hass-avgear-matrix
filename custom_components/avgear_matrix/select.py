@@ -71,7 +71,9 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         try:
             # Convert option back to int and route to this output
             input_num = int(option)
-            async with self.coordinator.matrix:
+
+            async with self.coordinator._matrix_lock, self.coordinator.matrix:
+                # Route the selected input to the output
                 result = await self.coordinator.matrix.route_input_to_output(
                     input_num, self.output_num
                 )
