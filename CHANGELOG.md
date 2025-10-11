@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Centralised matrix operations to the coordinator so that only one hdmimatrix is initialised
+- Upgrade `hdmimatrix` library to `v0.0.4`
 
 ### Removed
 - Removed locking as it was already handled in underlying [hdmimatrix](https://github.com/marklynch/hdmimatrix) code
