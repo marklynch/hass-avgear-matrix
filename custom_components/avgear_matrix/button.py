@@ -64,16 +64,19 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
     async def async_press(self) -> None:
         """Handle the button press."""
         try:
-            async with self.coordinator.matrix:
-                if self.entity_description.key == "power_on":
-                    result = await self.coordinator.matrix.power_on()
-                    _LOGGER.debug("Power on result: %s", result)
-                elif self.entity_description.key == "power_off":
-                    result = await self.coordinator.matrix.power_off()
-                    _LOGGER.debug("Power off result: %s", result)
+            if self.entity_description.key == "power_on":
+                result = await self.coordinator.async_power_on()
+            elif self.entity_description.key == "power_off":
+                result = await self.coordinator.async_power_off()
+            else:
+                _LOGGER.error("Unknown button action: %s", self.entity_description.key)
+                return
 
-            # Refresh coordinator data after power operations since they may affect overall device state
-            await self.coordinator.async_request_refresh()
+            if result:
+                # Refresh coordinator data after power operations since they may affect overall device state
+                await self.coordinator.async_request_refresh()
+            else:
+                _LOGGER.warning("Power operation %s failed", self.entity_description.key)
 
         except Exception as err:
             _LOGGER.error("Failed to execute %s: %s", self.entity_description.key, err)

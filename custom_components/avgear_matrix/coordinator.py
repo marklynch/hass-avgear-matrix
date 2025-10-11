@@ -63,6 +63,41 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         except OSError as error:
             raise UpdateFailed from error
 
+    async def async_power_on(self) -> bool:
+        """Power on the matrix."""
+        try:
+            async with self.matrix:
+                result = await self.matrix.power_on()
+                _LOGGER.debug("Power on result: %s", result)
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power on matrix: %s", err)
+            return False
+
+    async def async_power_off(self) -> bool:
+        """Power off the matrix."""
+        try:
+            async with self.matrix:
+                result = await self.matrix.power_off()
+                _LOGGER.debug("Power off result: %s", result)
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power off matrix: %s", err)
+            return False
+
+    async def async_route_input_to_output(self, input_num: int, output_num: int) -> bool:
+        """Route input to output."""
+        try:
+            async with self.matrix:
+                result = await self.matrix.route_input_to_output(input_num, output_num)
+                _LOGGER.debug("Routed input %s to output %s: %s", input_num, output_num, result)
+                # Update internal state immediately
+                self.update_output_state(output_num, input_num)
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to route input %s to output %s: %s", input_num, output_num, err)
+            return False
+
     async def async_get_device_info(self):
         """Get static device information once."""
         if self.device_info is None:

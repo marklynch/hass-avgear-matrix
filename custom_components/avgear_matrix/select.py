@@ -72,22 +72,14 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
             # Convert option back to int and route to this output
             input_num = int(option)
 
-            async with self.coordinator.matrix:
-                # Route the selected input to the output
-                result = await self.coordinator.matrix.route_input_to_output(
-                    input_num, self.output_num
-                )
+            # Use coordinator method instead of direct matrix access
+            result = await self.coordinator.async_route_input_to_output(input_num, self.output_num)
 
-            # Log the result for debugging
-            _LOGGER.debug(
-                f"Routed input {input_num} to output {self.output_num}: {result}"
-            )
-
-            # Update internal state immediately instead of waiting for refresh
-            self.coordinator.update_output_state(self.output_num, input_num)
-            
-            # Trigger state update for this entity and any others watching the same data
-            self.async_write_ha_state()
+            if result:
+                # Trigger state update for this entity and any others watching the same data
+                self.async_write_ha_state()
+            else:
+                _LOGGER.warning("Failed to route input %s to output %s", input_num, self.output_num)
 
         except ValueError:
             _LOGGER.error("Invalid input option: %s", option)
