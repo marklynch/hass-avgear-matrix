@@ -64,7 +64,7 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
     async def async_press(self) -> None:
         """Handle the button press."""
         try:
-            async with self.coordinator.matrix_lock, self.coordinator.matrix:
+            async with self.coordinator.matrix:
                 if self.entity_description.key == "power_on":
                     result = await self.coordinator.matrix.power_on()
                     _LOGGER.debug("Power on result: %s", result)
