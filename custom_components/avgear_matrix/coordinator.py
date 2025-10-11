@@ -51,7 +51,6 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
         self.device_info = None
 
-
     async def _async_update_data(self) -> dict[str, AsyncHDMIMatrix]:
         """Fetch data from AVGear Matrix."""
         _LOGGER.warning("_async_update_data coordinator")
@@ -89,3 +88,12 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     "version": "Unknown",
                 }
         return self.device_info
+
+    def update_output_state(self, output_num: int, input_num: int) -> None:
+        """Update the internal state for a specific output immediately."""
+        if self.data is None:
+            self.data = {}
+        self.data[output_num] = input_num
+        _LOGGER.debug(
+            "Updated internal state: output %s -> input %s", output_num, input_num
+        )

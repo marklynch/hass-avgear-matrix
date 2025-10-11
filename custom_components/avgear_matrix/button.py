@@ -72,7 +72,7 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
                     result = await self.coordinator.matrix.power_off()
                     _LOGGER.debug("Power off result: %s", result)
 
-            # Refresh coordinator data to update all entities
+            # Refresh coordinator data after power operations since they may affect overall device state
             await self.coordinator.async_request_refresh()
 
         except Exception as err:

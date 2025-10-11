@@ -83,8 +83,11 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
                 f"Routed input {input_num} to output {self.output_num}: {result}"
             )
 
-            # Refresh coordinator data to update all entities
-            await self.coordinator.async_request_refresh()
+            # Update internal state immediately instead of waiting for refresh
+            self.coordinator.update_output_state(self.output_num, input_num)
+            
+            # Trigger state update for this entity and any others watching the same data
+            self.async_write_ha_state()
 
         except ValueError:
             _LOGGER.error("Invalid input option: %s", option)
