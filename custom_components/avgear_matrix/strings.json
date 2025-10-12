@@ -20,6 +20,18 @@
     "select":{
       "switch_input": {
         "name": "Select Input"
+      },
+      "matrix_output_1": {
+        "name": "Matrix Output 1"
+      },
+      "matrix_output_2": {
+        "name": "Matrix Output 2"
+      },
+      "matrix_output_3": {
+        "name": "Matrix Output 3"
+      },
+      "matrix_output_4": {
+        "name": "Matrix Output 4"
       }
     },
     "button": {

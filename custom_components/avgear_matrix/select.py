@@ -38,7 +38,8 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         super().__init__(coordinator)
         self.output_num = output_num
         self._attr_unique_id = f"avgear_matrix_output_{output_num}"
-        self._attr_name = f"Matrix Output {output_num}"
+        self._attr_has_entity_name = True
+        self._attr_translation_key = f"matrix_output_{output_num}"
         # Define available inputs (adjust based on your matrix)
         self._attr_options = ["1", "2", "3", "4"]  # Input options
 
