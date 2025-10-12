@@ -7,7 +7,7 @@
   "documentation": "https://www.home-assistant.io/integrations/avgear_matrix",
   "iot_class": "local_polling",
   "requirements": [
-    "hdmimatrix==0.0.4"
+    "hdmimatrix==0.0.5"
   ],
-  "version": "0.0.5"
+  "version": "0.0.6"
 }

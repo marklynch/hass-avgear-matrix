@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2025-10-13
+### Added
+- Send a `output_on` command with every routing change to ensure that routing works reliably
+ 
+### Changed
+- Upgrade `hdmimatrix` library to `v0.0.5`
+
 ## [0.0.5] - 2025-10-11
 ### Added
 - Set internal state directly when changing a routing instead of waiting for full update.

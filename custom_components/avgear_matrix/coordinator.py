@@ -85,17 +85,28 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             _LOGGER.error("Failed to power off matrix: %s", err)
             return False
 
-    async def async_route_input_to_output(self, input_num: int, output_num: int) -> bool:
+    async def async_route_input_to_output(
+        self, input_num: int, output_num: int
+    ) -> bool:
         """Route input to output."""
         try:
             async with self.matrix:
+                # Ensure the output is powered on before routing
+                result = await self.matrix.output_on(output_num)
+                _LOGGER.debug("Turned on output %s: %s", output_num, result)
+
+                # Now route the input to the output
                 result = await self.matrix.route_input_to_output(input_num, output_num)
-                _LOGGER.debug("Routed input %s to output %s: %s", input_num, output_num, result)
+                _LOGGER.debug(
+                    "Routed input %s to output %s: %s", input_num, output_num, result
+                )
                 # Update internal state immediately
                 self.update_output_state(output_num, input_num)
                 return result
         except Exception as err:
-            _LOGGER.error("Failed to route input %s to output %s: %s", input_num, output_num, err)
+            _LOGGER.error(
+                "Failed to route input %s to output %s: %s", input_num, output_num, err
+            )
             return False
 
     async def async_get_device_info(self):
