@@ -6,8 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.0.7] - 2025-10-13
+### Added
+- Call power_on before trying to read status during initial setup
+
 ### Changed
 - Make the audit log names consistently use the device name
+- Upgrade `hdmimatrix` library to `v0.0.6`
 
 ## [0.0.6] - 2025-10-13
 ### Added

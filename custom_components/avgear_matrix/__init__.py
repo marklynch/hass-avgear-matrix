@@ -1,5 +1,6 @@
 """The AVGear Matrix integration."""
 
+import asyncio
 from hdmimatrix import AsyncHDMIMatrix
 
 from homeassistant.const import CONF_HOST, CONF_PORT, Platform
@@ -32,6 +33,13 @@ async def async_setup_entry(
     try:
         # Using async context manager
         async with matrix:
+            # Power on the device during initial setup
+            _LOGGER.debug("Powering on device during setup")
+            await matrix.power_on()
+            
+            # Wait 2 seconds to ensure device is fully available
+            await asyncio.sleep(2)
+            
             name = await matrix.get_device_name()
             if not name:
                 raise ConfigEntryNotReady
