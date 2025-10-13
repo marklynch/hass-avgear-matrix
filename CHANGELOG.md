@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.8] - 2025-10-13
+### Changed
+- Another fix on the audit log consistency
+
 ## [0.0.7] - 2025-10-13
 ### Added
 - Call power_on before trying to read status during initial setup
