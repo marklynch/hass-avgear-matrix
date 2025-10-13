@@ -1,0 +1,33 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Error al conectar",
+            "unsupported_model": "El modelo no está soportado actualmente"
+        },
+        "step": {
+            "user": {
+                "data": {
+                },
+                "data_description": {
+                    "host": "El nombre de host o dirección IP de su dispositivo matriz AVGear."
+                },
+                "description": "Configure los detalles de conexión de su matriz AVGear."
+            }
+        }
+    },
+    "entity": {
+        "select": {
+            "matrix_output": {
+                "name": "Salida {number}"
+            }
+        },
+        "button": {
+            "power_on": {
+                "name": "Encender"
+            },
+            "power_off": {
+                "name": "Apagar"
+            }
+        }
+    }
+}

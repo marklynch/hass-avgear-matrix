@@ -17,8 +17,8 @@
     },
     "entity": {
         "select":{
-             "switch_input": {
-                "name": "Select Input"
+            "matrix_output": {
+                "name": "Output {number}"
             }
         },
         "button": {

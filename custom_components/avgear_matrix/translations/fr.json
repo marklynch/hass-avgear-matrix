@@ -1,0 +1,33 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Échec de la connexion",
+            "unsupported_model": "Le modèle n'est actuellement pas pris en charge"
+        },
+        "step": {
+            "user": {
+                "data": {
+                },
+                "data_description": {
+                    "host": "Le nom d'hôte ou l'adresse IP de votre appareil matrice AVGear."
+                },
+                "description": "Configurez les détails de connexion de votre matrice AVGear."
+            }
+        }
+    },
+    "entity": {
+        "select": {
+            "matrix_output": {
+                "name": "Sortie {number}"
+            }
+        },
+        "button": {
+            "power_on": {
+                "name": "Allumer"
+            },
+            "power_off": {
+                "name": "Éteindre"
+            }
+        }
+    }
+}
