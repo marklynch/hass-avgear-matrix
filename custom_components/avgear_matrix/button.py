@@ -1,13 +1,14 @@
 """Button platform for AVGear Matrix."""
 
 import logging
+
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
-from homeassistant.core import HomeAssistant
-from homeassistant.const import EntityCategory
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.const import EntityCategory
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 
@@ -49,8 +50,9 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
         """Initialize the button."""
         super().__init__(coordinator)
         self.entity_description = description
-        self._attr_unique_id = f"{coordinator.device_id}_{description.key}"
         self._attr_has_entity_name = True
+        self._attr_unique_id = f"{coordinator.device_id}_{description.key}"
+        self._attr_translation_key = description.key
 
         # Add device info
         self._attr_device_info: DeviceInfo = DeviceInfo(
@@ -76,7 +78,9 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
                 # Refresh coordinator data after power operations since they may affect overall device state
                 await self.coordinator.async_request_refresh()
             else:
-                _LOGGER.warning("Power operation %s failed", self.entity_description.key)
+                _LOGGER.warning(
+                    "Power operation %s failed", self.entity_description.key
+                )
 
         except Exception as err:
             _LOGGER.error("Failed to execute %s: %s", self.entity_description.key, err)
