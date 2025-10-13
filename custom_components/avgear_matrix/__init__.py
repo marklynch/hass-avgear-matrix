@@ -47,7 +47,7 @@ async def async_setup_entry(
         raise ConfigEntryNotReady from error
 
     # TODO - what should we pass through instead of name?
-    coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, name, host)
+    coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, host)
     # Load static device info once during setup
     await coordinator.async_get_device_info()
 

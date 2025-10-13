@@ -27,12 +27,10 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         hass: HomeAssistant,
         entry: AVGearMatrixConfigEntry,
         matrix: AsyncHDMIMatrix,
-        info: dict[str, str],  # Todo - likely not using
         host: str,
     ) -> None:
         """Initialize global AVGear data updater."""
         self.matrix = matrix
-        self.info = info
 
         _LOGGER.warning("Init coordinator")
 
