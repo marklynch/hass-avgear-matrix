@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-10-13
 ### Added
 - Call power_on before trying to validate the connection
+- Translations for spanish and french. 
 
+### Changed
+- Cleaned up the label handling between button and select to be consistent and log more cleanly	
+- Simplified the naming of the AVGear Device to be AVGear Matrix and put the name and type in the model.	
+
+### Removed
+- Unused `strings.json`	
+- remove unused internal variable in coordinator init.	
 
 ## [0.0.8] - 2025-10-13
 ### Changed
