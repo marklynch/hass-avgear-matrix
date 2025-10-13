@@ -118,8 +118,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     version = await self.matrix.get_device_version()
 
                 self.device_info = {
-                    "name": name,
-                    "model": device_type,
+                    "name": "AVGear Matrix",
+                    "model": f"{name} {device_type}",
                     "manufacturer": "AVGear",
                     "version": version,
                 }
