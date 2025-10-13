@@ -36,10 +36,10 @@ async def async_setup_entry(
             # Power on the device during initial setup
             _LOGGER.debug("Powering on device during setup")
             await matrix.power_on()
-            
+
             # Wait 2 seconds to ensure device is fully available
             await asyncio.sleep(2)
-            
+
             name = await matrix.get_device_name()
             if not name:
                 raise ConfigEntryNotReady

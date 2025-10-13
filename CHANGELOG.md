@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Call power_on before trying to validate the connection
+
+
 ## [0.0.8] - 2025-10-13
 ### Changed
 - Another fix on the audit log consistency

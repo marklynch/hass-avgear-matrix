@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import asyncio
 
 from typing import Any
 
@@ -30,6 +31,13 @@ async def _validate_connection(host: str) -> bool:
 
     # Using async context manager
     async with matrix:
+        # Power on the device during initial setup
+        _LOGGER.debug("Powering on device during setup")
+        await matrix.power_on()
+
+        # Wait 2 seconds to ensure device is fully available
+        await asyncio.sleep(2)
+
         name = await matrix.get_device_name()
         # check the name
         _LOGGER.debug("Device found: %s", name)
