@@ -4,10 +4,10 @@
   "icon": "mdi:video-switch",
   "codeowners": ["@marklynch"],
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/avgear_matrix",
+  "documentation": "https://github.com/marklynch/hass-avgear-matrix",
   "iot_class": "local_polling",
   "requirements": [
-    "hdmimatrix==0.0.6"
+    "hdmimatrix==0.1.0"
   ],
   "version": "0.1.0"
 }

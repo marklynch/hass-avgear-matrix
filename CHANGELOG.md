@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-02-08
+### Added
+- Upgrade `hdmimatrix` library to `v0.1.0`
+- Update the documentation page to point to github
+
 ## [0.1.0] - 2025-10-13
 ### Added
 - Call power_on before trying to validate the connection
