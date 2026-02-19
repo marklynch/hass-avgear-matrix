@@ -17,8 +17,6 @@ _LOGGER = logging.getLogger(__name__)
 
 SELECT_DESCRIPTION = SelectEntityDescription(
     key="matrix_output",
-    # name="Matrix Output",
-    # translation_key="matrix_output",
     entity_category=EntityCategory.CONFIG,
 )
 
@@ -33,8 +31,7 @@ async def async_setup_entry(
 
     entities = []
 
-    # TODO - read this from matrix info in future
-    for output_num in range(1, 5):  # Outputs 1-4
+    for output_num in range(1, coordinator.num_outputs + 1):
         entities.append(AvgearMatrixSelect(coordinator, SELECT_DESCRIPTION, output_num))
 
     async_add_entities(entities)
@@ -50,7 +47,7 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         super().__init__(coordinator)
         self.entity_description = description
 
-        _LOGGER.warning(f"OutputNum: {output_num}")
+        _LOGGER.debug("OutputNum: %s", output_num)
 
         self.output_num = output_num
         self._attr_unique_id = f"{coordinator.device_id}_{description.key}_{output_num}"
@@ -58,23 +55,14 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         self._attr_translation_key = "matrix_output"
         self._attr_translation_placeholders = {"number": str(output_num)}
 
-        # Define available inputs (adjust based on your matrix)
-        self._attr_options = ["1", "2", "3", "4"]  # Input options
+        self._attr_options = [str(i) for i in range(1, coordinator.num_inputs + 1)]
 
-        # Add device info
-
-        # _LOGGER.warning(
-        #     f"coordinator.device_info['name']: {coordinator.device_info['name']}"
-        # )
-        # _LOGGER.warning(f"self._attr_unique_id: {self._attr_unique_id}")
-        # _LOGGER.warning(f"AvgearMatrixSelect - device_id: {coordinator.device_id}")
         self._attr_device_info: DeviceInfo = DeviceInfo(
             identifiers={(DOMAIN, f"{coordinator.device_id}")},
             manufacturer="AVGear",
             name=coordinator.device_info["name"],
             model=coordinator.device_info["model"],
             sw_version=coordinator.device_info["version"],
-            # configuration_url=f"http://{coordinator.host}",  # Link to device config
         )
 
     @property
