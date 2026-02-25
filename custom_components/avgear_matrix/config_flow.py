@@ -44,7 +44,7 @@ async def _validate_connection(host: str) -> bool:
         if name in SUPPORTED_MODELS:
             return True
 
-    _LOGGER.warning("Device not supported: %s", name)
+    _LOGGER.debug("Device not supported: %s", name)
     return False
 
 
@@ -55,7 +55,7 @@ class AVGearMatrixConfigFlow(ConfigFlow, domain=DOMAIN):
 
     @callback
     def _async_get_entry(self, data: dict[str, Any]) -> ConfigFlowResult:
-        _LOGGER.warning("_async_get_entry")
+        _LOGGER.debug("_async_get_entry")
         return self.async_create_entry(
             title=data[CONF_HOST],
             data={
@@ -87,5 +87,5 @@ class AVGearMatrixConfigFlow(ConfigFlow, domain=DOMAIN):
                 step_id="user", data_schema=DATA_SCHEMA, errors=errors
             )
 
-        _LOGGER.warning("No errors")
+        _LOGGER.debug("No errors")
         return self._async_get_entry(user_input)

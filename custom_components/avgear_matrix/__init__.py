@@ -21,10 +21,10 @@ async def async_setup_entry(
 ) -> bool:
     """Set up AVGear Matrix from a config entry."""
 
-    _LOGGER.warning("Setup Entry")
+    _LOGGER.debug("Setup Entry")
     host = entry.data[CONF_HOST]
     port = entry.data[CONF_PORT]
-    _LOGGER.warning("Setup Entry %s %s", host, port)
+    _LOGGER.debug("Setup Entry %s %s", host, port)
 
     matrix = AsyncHDMIMatrix(
         host,
@@ -46,7 +46,6 @@ async def async_setup_entry(
     except OSError as error:
         raise ConfigEntryNotReady from error
 
-    # TODO - what should we pass through instead of name?
     coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, host)
     # Load static device info once during setup
     await coordinator.async_get_device_info()
