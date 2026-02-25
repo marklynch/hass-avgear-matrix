@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import logging
+from importlib.metadata import version as pkg_version
 
 from hdmimatrix import AsyncHDMIMatrix
 
 from homeassistant.components.climate import SCAN_INTERVAL
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
@@ -117,11 +119,13 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     device_type = await self.matrix.get_device_type()
                     version = await self.matrix.get_device_version()
 
+                lib_version = pkg_version("hdmimatrix")
                 self.device_info = {
                     "name": "AVGear Matrix",
                     "model": f"{name} {device_type}",
                     "manufacturer": "AVGear",
                     "version": version,
+                    "lib_version": lib_version,
                 }
             except Exception as err:
                 _LOGGER.warning("Could not get device info: %s", err)
@@ -130,8 +134,21 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     "model": "Unknown",
                     "manufacturer": "AVGear",
                     "version": "Unknown",
+                    "lib_version": "Unknown",
                 }
         return self.device_info
+
+    @property
+    def ha_device_info(self) -> DeviceInfo:
+        """Return HA DeviceInfo for this device."""
+        info = self.device_info or {}
+        return DeviceInfo(
+            identifiers={(DOMAIN, self.device_id)},
+            manufacturer="AVGear",
+            name=info.get("name", "AVGear Matrix"),
+            model=info.get("model"),
+            sw_version=f"{info.get('version', 'Unknown')} (hdmimatrix {info.get('lib_version', 'Unknown')})",
+        )
 
     def update_output_state(self, output_num: int, input_num: int) -> None:
         """Update the internal state for a specific output immediately."""

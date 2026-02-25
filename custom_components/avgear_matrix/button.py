@@ -6,11 +6,9 @@ from homeassistant.components.button import ButtonEntity, ButtonEntityDescriptio
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -54,14 +52,7 @@ class AvgearMatrixButton(CoordinatorEntity, ButtonEntity):
         self._attr_unique_id = f"{coordinator.device_id}_{description.key}"
         self._attr_translation_key = description.key
 
-        # Add device info
-        self._attr_device_info: DeviceInfo = DeviceInfo(
-            identifiers={(DOMAIN, f"{coordinator.device_id}")},
-            manufacturer="AVGear",
-            name=coordinator.device_info["name"],
-            model=coordinator.device_info["model"],
-            sw_version=coordinator.device_info["version"],
-        )
+        self._attr_device_info = coordinator.ha_device_info
 
     async def async_press(self) -> None:
         """Handle the button press."""

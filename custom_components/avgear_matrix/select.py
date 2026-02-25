@@ -6,11 +6,9 @@ from homeassistant.components.select import SelectEntity, SelectEntityDescriptio
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,7 +48,7 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         super().__init__(coordinator)
         self.entity_description = description
 
-        _LOGGER.warning(f"OutputNum: {output_num}")
+        _LOGGER.info(f"OutputNum: {output_num}")
 
         self.output_num = output_num
         self._attr_unique_id = f"{coordinator.device_id}_{description.key}_{output_num}"
@@ -61,21 +59,7 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         # Define available inputs (adjust based on your matrix)
         self._attr_options = ["1", "2", "3", "4"]  # Input options
 
-        # Add device info
-
-        # _LOGGER.warning(
-        #     f"coordinator.device_info['name']: {coordinator.device_info['name']}"
-        # )
-        # _LOGGER.warning(f"self._attr_unique_id: {self._attr_unique_id}")
-        # _LOGGER.warning(f"AvgearMatrixSelect - device_id: {coordinator.device_id}")
-        self._attr_device_info: DeviceInfo = DeviceInfo(
-            identifiers={(DOMAIN, f"{coordinator.device_id}")},
-            manufacturer="AVGear",
-            name=coordinator.device_info["name"],
-            model=coordinator.device_info["model"],
-            sw_version=coordinator.device_info["version"],
-            # configuration_url=f"http://{coordinator.host}",  # Link to device config
-        )
+        self._attr_device_info = coordinator.ha_device_info
 
     @property
     def current_option(self):

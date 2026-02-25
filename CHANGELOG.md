@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-02-25
+### Added
+- Upgrade `hdmimatrix` library to `v0.2.0`
+- Added lookup of supported models to control inputs and outputs
+- Use a single device_info entity instead of repeating it in button.py and select.py
+
+### Fixed
+- Cleaned up logging levels
+
+
 ## [0.1.1] - 2026-02-08
 ### Added
 - Upgrade `hdmimatrix` library to `v0.1.0`
