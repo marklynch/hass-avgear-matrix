@@ -7,13 +7,12 @@ from importlib.metadata import version as pkg_version
 
 from hdmimatrix import AsyncHDMIMatrix
 
-from homeassistant.components.climate import SCAN_INTERVAL
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN
+from .const import DOMAIN, SCAN_INTERVAL, SUPPORTED_MODELS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         """Initialize global AVGear data updater."""
         self.matrix = matrix
 
-        _LOGGER.warning("Init coordinator")
+        _LOGGER.debug("Init coordinator")
 
         super().__init__(
             hass,
@@ -44,16 +43,17 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             update_interval=SCAN_INTERVAL,
         )
 
-        # host = entry.get("CONF_HOST", "wrong")
         _LOGGER.debug("CONF_HOST: %s", host)
 
         # Create a unique device identifier
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
         self.device_info = None
+        self.num_inputs: int = 4
+        self.num_outputs: int = 4
 
-    async def _async_update_data(self) -> dict[str, AsyncHDMIMatrix]:
+    async def _async_update_data(self) -> dict[str, str]:
         """Fetch data from AVGear Matrix."""
-        _LOGGER.warning("_async_update_data coordinator")
+        _LOGGER.debug("_async_update_data coordinator")
 
         try:
             async with self.matrix:
@@ -127,6 +127,9 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     "version": version,
                     "lib_version": lib_version,
                 }
+                if name in SUPPORTED_MODELS:
+                    self.num_inputs = SUPPORTED_MODELS[name]["inputs"]
+                    self.num_outputs = SUPPORTED_MODELS[name]["outputs"]
             except Exception as err:
                 _LOGGER.warning("Could not get device info: %s", err)
                 self.device_info = {
