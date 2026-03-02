@@ -24,6 +24,9 @@
         "switch": {
             "power": {
                 "name": "Power"
+            },
+            "hdbt_power": {
+                "name": "HdBT Power"
             }
         }
     }

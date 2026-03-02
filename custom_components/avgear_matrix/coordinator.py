@@ -52,6 +52,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         self.num_inputs: int = 4
         self.num_outputs: int = 4
         self.is_powered_on: bool | None = None
+        self.is_hdbt_powered_on: bool | None = None
 
     async def _async_update_data(self) -> dict[str, str]:
         """Fetch data from AVGear Matrix."""
@@ -63,6 +64,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                 _LOGGER.debug("Video Status: %s", video_status)
                 self.is_powered_on = await self.matrix.is_powered_on()
                 _LOGGER.debug("Is powered on: %s", self.is_powered_on)
+                self.is_hdbt_powered_on = await self.matrix.is_hdbt_powered_on()
+                _LOGGER.debug("Is HdBT powered on: %s", self.is_hdbt_powered_on)
                 return video_status
         except OSError as error:
             raise UpdateFailed from error
@@ -87,6 +90,32 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                 return result
         except Exception as err:
             _LOGGER.error("Failed to power off matrix: %s", err)
+            return False
+
+    async def async_hdbt_power_on(self) -> bool:
+        """Power on HdBT."""
+        try:
+            async with self.matrix:
+                result = await self.matrix.hdbt_power_on()
+                _LOGGER.debug("HdBT power on result: %s", result)
+                if result:
+                    self.is_hdbt_powered_on = True
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power on HdBT: %s", err)
+            return False
+
+    async def async_hdbt_power_off(self) -> bool:
+        """Power off HdBT."""
+        try:
+            async with self.matrix:
+                result = await self.matrix.hdbt_power_off()
+                _LOGGER.debug("HdBT power off result: %s", result)
+                if result:
+                    self.is_hdbt_powered_on = False
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power off HdBT: %s", err)
             return False
 
     async def async_route_input_to_output(

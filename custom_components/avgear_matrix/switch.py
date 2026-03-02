@@ -12,9 +12,15 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-SWITCH_DESCRIPTION = SwitchEntityDescription(
+POWER_SWITCH_DESCRIPTION = SwitchEntityDescription(
     key="power",
     translation_key="power",
+    entity_category=EntityCategory.CONFIG,
+)
+
+HDBT_POWER_SWITCH_DESCRIPTION = SwitchEntityDescription(
+    key="hdbt_power",
+    translation_key="hdbt_power",
     entity_category=EntityCategory.CONFIG,
 )
 
@@ -26,7 +32,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up the AVGear Switch platform."""
     coordinator = config_entry.runtime_data
-    async_add_entities([AvgearMatrixPowerSwitch(coordinator, SWITCH_DESCRIPTION)])
+    async_add_entities([
+        AvgearMatrixPowerSwitch(coordinator, POWER_SWITCH_DESCRIPTION),
+        AvgearMatrixHdbtPowerSwitch(coordinator, HDBT_POWER_SWITCH_DESCRIPTION),
+    ])
 
 
 class AvgearMatrixPowerSwitch(CoordinatorEntity, SwitchEntity):
@@ -61,3 +70,37 @@ class AvgearMatrixPowerSwitch(CoordinatorEntity, SwitchEntity):
             await self.coordinator.async_request_refresh()
         else:
             _LOGGER.warning("Failed to power off matrix")
+
+
+class AvgearMatrixHdbtPowerSwitch(CoordinatorEntity, SwitchEntity):
+    """Switch entity for HdBT power state."""
+
+    def __init__(self, coordinator, description: SwitchEntityDescription) -> None:
+        """Initialize the switch."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_has_entity_name = True
+        self._attr_unique_id = f"{coordinator.device_id}_{description.key}"
+        self._attr_translation_key = description.key
+        self._attr_device_info = coordinator.ha_device_info
+
+    @property
+    def is_on(self) -> bool | None:
+        """Return true if HdBT is powered on."""
+        return self.coordinator.is_hdbt_powered_on
+
+    async def async_turn_on(self, **kwargs) -> None:
+        """Turn HdBT on."""
+        result = await self.coordinator.async_hdbt_power_on()
+        if result:
+            await self.coordinator.async_request_refresh()
+        else:
+            _LOGGER.warning("Failed to power on HdBT")
+
+    async def async_turn_off(self, **kwargs) -> None:
+        """Turn HdBT off."""
+        result = await self.coordinator.async_hdbt_power_off()
+        if result:
+            await self.coordinator.async_request_refresh()
+        else:
+            _LOGGER.warning("Failed to power off HdBT")

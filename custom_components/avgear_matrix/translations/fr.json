@@ -24,6 +24,9 @@
         "switch": {
             "power": {
                 "name": "Alimentation"
+            },
+            "hdbt_power": {
+                "name": "Alimentation HdBT"
             }
         }
     }
