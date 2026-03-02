@@ -21,14 +21,6 @@
                 "name": "Output {number}"
             }
         },
-        "button": {
-            "power_on": {
-                "name": "Power On"
-            },
-            "power_off": {
-                "name": "Power Off"
-            }
-        },
         "switch": {
             "power": {
                 "name": "Power"

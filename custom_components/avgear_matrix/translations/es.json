@@ -21,14 +21,6 @@
                 "name": "Salida {number}"
             }
         },
-        "button": {
-            "power_on": {
-                "name": "Encender"
-            },
-            "power_off": {
-                "name": "Apagar"
-            }
-        },
         "switch": {
             "power": {
                 "name": "Alimentación"

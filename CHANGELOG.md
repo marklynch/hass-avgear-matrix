@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Power switch entity that shows current power state using `is_powered_on()` and allows toggling power on/off
 - Upgrade `hdmimatrix` library to `v0.3.0`
+### Removed
+- Removed old momentary buttons now that we are using power switch
 
 
 ## [0.2.0] - 2026-02-25

@@ -21,14 +21,6 @@
                 "name": "Sortie {number}"
             }
         },
-        "button": {
-            "power_on": {
-                "name": "Allumer"
-            },
-            "power_off": {
-                "name": "Éteindre"
-            }
-        },
         "switch": {
             "power": {
                 "name": "Alimentation"
