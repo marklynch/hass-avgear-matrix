@@ -46,10 +46,12 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         _LOGGER.debug("CONF_HOST: %s", host)
 
         # Create a unique device identifier
+        self.host = host
         self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
         self.device_info = None
         self.num_inputs: int = 4
         self.num_outputs: int = 4
+        self.is_powered_on: bool | None = None
 
     async def _async_update_data(self) -> dict[str, str]:
         """Fetch data from AVGear Matrix."""
@@ -59,6 +61,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             async with self.matrix:
                 video_status = await self.matrix.get_video_status_parsed()
                 _LOGGER.debug("Video Status: %s", video_status)
+                self.is_powered_on = await self.matrix.is_powered_on()
+                _LOGGER.debug("Is powered on: %s", self.is_powered_on)
                 return video_status
         except OSError as error:
             raise UpdateFailed from error
@@ -116,13 +120,12 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                 # Load static info from device
                 async with self.matrix:
                     name = await self.matrix.get_device_name()
-                    device_type = await self.matrix.get_device_type()
                     version = await self.matrix.get_device_version()
 
                 lib_version = pkg_version("hdmimatrix")
                 self.device_info = {
                     "name": "AVGear Matrix",
-                    "model": f"{name} {device_type}",
+                    "model": name,
                     "manufacturer": "AVGear",
                     "version": version,
                     "lib_version": lib_version,
@@ -151,6 +154,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             name=info.get("name", "AVGear Matrix"),
             model=info.get("model"),
             sw_version=f"{info.get('version', 'Unknown')} (hdmimatrix {info.get('lib_version', 'Unknown')})",
+            configuration_url=f"http://{self.host}",
         )
 
     def update_output_state(self, output_num: int, input_num: int) -> None:

@@ -28,6 +28,11 @@
             "power_off": {
                 "name": "Power Off"
             }
+        },
+        "switch": {
+            "power": {
+                "name": "Power"
+            }
         }
     }
 }

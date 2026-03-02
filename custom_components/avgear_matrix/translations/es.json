@@ -28,6 +28,11 @@
             "power_off": {
                 "name": "Apagar"
             }
+        },
+        "switch": {
+            "power": {
+                "name": "Alimentación"
+            }
         }
     }
 }
