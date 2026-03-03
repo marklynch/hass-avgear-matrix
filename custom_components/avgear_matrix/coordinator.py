@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from importlib.metadata import version as pkg_version
 
@@ -53,19 +54,23 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         self.num_outputs: int = 4
         self.is_powered_on: bool | None = None
         self.is_hdbt_powered_on: bool | None = None
+        self.output_power_status: dict[int, bool] = {}
+        self._lock = asyncio.Lock()
 
     async def _async_update_data(self) -> dict[str, str]:
         """Fetch data from AVGear Matrix."""
         _LOGGER.debug("_async_update_data coordinator")
 
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 video_status = await self.matrix.get_video_status_parsed()
                 _LOGGER.debug("Video Status: %s", video_status)
                 self.is_powered_on = await self.matrix.is_powered_on()
                 _LOGGER.debug("Is powered on: %s", self.is_powered_on)
                 self.is_hdbt_powered_on = await self.matrix.is_hdbt_powered_on()
                 _LOGGER.debug("Is HdBT powered on: %s", self.is_hdbt_powered_on)
+                self.output_power_status = await self.matrix.get_output_power_status_parsed()
+                _LOGGER.debug("Output power status: %s", self.output_power_status)
                 return video_status
         except OSError as error:
             raise UpdateFailed from error
@@ -73,7 +78,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
     async def async_power_on(self) -> bool:
         """Power on the matrix."""
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 result = await self.matrix.power_on()
                 _LOGGER.debug("Power on result: %s", result)
                 return result
@@ -84,7 +89,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
     async def async_power_off(self) -> bool:
         """Power off the matrix."""
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 result = await self.matrix.power_off()
                 _LOGGER.debug("Power off result: %s", result)
                 return result
@@ -95,7 +100,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
     async def async_hdbt_power_on(self) -> bool:
         """Power on HdBT."""
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 result = await self.matrix.hdbt_power_on()
                 _LOGGER.debug("HdBT power on result: %s", result)
                 if result:
@@ -108,7 +113,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
     async def async_hdbt_power_off(self) -> bool:
         """Power off HdBT."""
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 result = await self.matrix.hdbt_power_off()
                 _LOGGER.debug("HdBT power off result: %s", result)
                 if result:
@@ -118,12 +123,38 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             _LOGGER.error("Failed to power off HdBT: %s", err)
             return False
 
+    async def async_output_on(self, output_num: int) -> bool:
+        """Power on an individual output."""
+        try:
+            async with self._lock, self.matrix:
+                result = await self.matrix.output_on(output_num)
+                _LOGGER.debug("Output %s on result: %s", output_num, result)
+                if result:
+                    self.output_power_status[output_num] = await self.matrix.is_output_on(output_num)
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power on output %s: %s", output_num, err)
+            return False
+
+    async def async_output_off(self, output_num: int) -> bool:
+        """Power off an individual output."""
+        try:
+            async with self._lock, self.matrix:
+                result = await self.matrix.output_off(output_num)
+                _LOGGER.debug("Output %s off result: %s", output_num, result)
+                if result:
+                    self.output_power_status[output_num] = await self.matrix.is_output_on(output_num)
+                return result
+        except Exception as err:
+            _LOGGER.error("Failed to power off output %s: %s", output_num, err)
+            return False
+
     async def async_route_input_to_output(
         self, input_num: int, output_num: int
     ) -> bool:
         """Route input to output."""
         try:
-            async with self.matrix:
+            async with self._lock, self.matrix:
                 # Ensure the output is powered on before routing
                 result = await self.matrix.output_on(output_num)
                 _LOGGER.debug("Turned on output %s: %s", output_num, result)
@@ -147,11 +178,11 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         if self.device_info is None:
             try:
                 # Load static info from device
-                async with self.matrix:
+                async with self._lock, self.matrix:
                     name = await self.matrix.get_device_name()
                     version = await self.matrix.get_device_version()
 
-                lib_version = pkg_version("hdmimatrix")
+                lib_version = await self.hass.async_add_executor_job(pkg_version, "hdmimatrix")
                 self.device_info = {
                     "name": "AVGear Matrix",
                     "model": name,

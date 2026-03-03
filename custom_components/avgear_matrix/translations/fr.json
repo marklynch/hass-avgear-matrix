@@ -27,6 +27,9 @@
             },
             "hdbt_power": {
                 "name": "Alimentation HdBT"
+            },
+            "output_power": {
+                "name": "Sortie {number}"
             }
         }
     }

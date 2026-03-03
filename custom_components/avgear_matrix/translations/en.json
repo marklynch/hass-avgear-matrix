@@ -27,6 +27,9 @@
             },
             "hdbt_power": {
                 "name": "HdBT Power"
+            },
+            "output_power": {
+                "name": "Output {number}"
             }
         }
     }

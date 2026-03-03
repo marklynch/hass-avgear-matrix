@@ -4,7 +4,7 @@ import logging
 
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EntityCategory
+
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -15,7 +15,6 @@ _LOGGER = logging.getLogger(__name__)
 
 SELECT_DESCRIPTION = SelectEntityDescription(
     key="matrix_output",
-    entity_category=EntityCategory.CONFIG,
 )
 
 

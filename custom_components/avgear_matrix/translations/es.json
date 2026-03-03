@@ -27,6 +27,9 @@
             },
             "hdbt_power": {
                 "name": "Alimentación HdBT"
+            },
+            "output_power": {
+                "name": "Salida {number}"
             }
         }
     }

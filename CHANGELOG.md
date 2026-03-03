@@ -12,6 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 
+## [0.4.0] - 2026-03-03
+### Added
+- Per-output power switches to turn individual outputs on and off independently
+- Device configuration URL link in HA device page (opens `http://<host>`)
+- Upgrade `hdmimatrix` library to `v0.6.0`
+
+### Changed
+- Moved all controls from Configuration section to Controls section in HA device page
+
+### Fixed
+- Device model field was showing routing status messages mixed in from `get_device_type()` — now uses device name only
+- Blocking filesystem call (`pkg_version`) inside the async event loop — now runs in executor
+- Concurrent matrix access causing `read() called while another coroutine is already waiting` — serialised with `asyncio.Lock`
+
+
 ## [0.3.0] - 2026-03-02
 ### Added
 - Power switch entity that shows current power state using `is_powered_on()` and allows toggling power on/off
