@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Config entry title changed from raw IP address to `AVGear Matrix (IP:port)` for clarity
+- ⚠️ **Breaking**: Device name now includes a Crockford Base32 identifier derived from the IP and port (e.g. `AVGear Matrix 3GX00BH0`) to ensure unique entity IDs when multiple devices are configured. Existing scripts, automations, and dashboards referencing entity IDs will need to be updated.
 
 ### Fixed
 

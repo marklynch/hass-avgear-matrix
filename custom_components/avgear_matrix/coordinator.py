@@ -3,8 +3,22 @@
 from __future__ import annotations
 
 import asyncio
+import ipaddress
 import logging
 from importlib.metadata import version as pkg_version
+
+_CROCKFORD_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+
+
+def _crockford32_encode(n: int) -> str:
+    """Encode an integer as a Crockford Base32 string."""
+    if n == 0:
+        return "0"
+    result = []
+    while n:
+        result.append(_CROCKFORD_ALPHABET[n & 31])
+        n >>= 5
+    return "".join(reversed(result))
 
 from hdmimatrix import AsyncHDMIMatrix
 
@@ -30,6 +44,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         entry: AVGearMatrixConfigEntry,
         matrix: AsyncHDMIMatrix,
         host: str,
+        port: int,
     ) -> None:
         """Initialize global AVGear data updater."""
         self.matrix = matrix
@@ -48,7 +63,9 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
 
         # Create a unique device identifier
         self.host = host
-        self.device_id = f"avgear_matrix_{host.replace('.', '_')}"
+        _host_int = int(ipaddress.ip_address(host))
+        self.short_id = _crockford32_encode((_host_int << 16) | port)
+        self.device_id = f"avgear_matrix_{self.short_id}"
         self.device_info = None
         self.num_inputs: int = 4
         self.num_outputs: int = 4
@@ -186,7 +203,7 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
 
                 lib_version = await self.hass.async_add_executor_job(pkg_version, "hdmimatrix")
                 self.device_info = {
-                    "name": "AVGear Matrix",
+                    "name": f"AVGear Matrix {self.short_id}",
                     "model": name,
                     "type": device_type,
                     "manufacturer": "AVGear",

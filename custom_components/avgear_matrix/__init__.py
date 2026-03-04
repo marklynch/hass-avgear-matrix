@@ -46,7 +46,7 @@ async def async_setup_entry(
     except OSError as error:
         raise ConfigEntryNotReady from error
 
-    coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, host)
+    coordinator = AVGearMatrixDataUpdateCoordinator(hass, entry, matrix, host, port)
     # Load static device info once during setup
     await coordinator.async_get_device_info()
 
