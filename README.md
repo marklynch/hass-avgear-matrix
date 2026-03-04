@@ -17,9 +17,9 @@ It uses the [hdmimatrix python library](https://github.com/marklynch/hdmimatrix)
 
 ## Features
 * Supports any AVGear Matrix device
+* Master power switch with all controls automatically disabled when powered off
 * Route inputs to outputs via select entities per output
 * Per-output power switches
-* HdBT power switch
-* Master power switch
-* Diagnostic sensors for device name, type, and input count
+* HdBT power switch (HDBaseT models only)
+* Diagnostic sensors for device name, type, firmware version, library version, number of inputs, and number of outputs
 
