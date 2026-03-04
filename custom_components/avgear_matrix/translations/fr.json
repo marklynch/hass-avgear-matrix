@@ -31,6 +31,12 @@
             },
             "num_outputs": {
                 "name": "Sorties"
+            },
+            "firmware_version": {
+                "name": "Version du firmware"
+            },
+            "lib_version": {
+                "name": "Version de la bibliothèque"
             }
         },
         "select": {

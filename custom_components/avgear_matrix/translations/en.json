@@ -31,6 +31,12 @@
             },
             "num_outputs": {
                 "name": "Outputs"
+            },
+            "firmware_version": {
+                "name": "Firmware Version"
+            },
+            "lib_version": {
+                "name": "Library Version"
             }
         },
         "select":{

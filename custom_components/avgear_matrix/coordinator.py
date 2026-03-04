@@ -27,7 +27,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN, SCAN_INTERVAL
+from .const import DEVICE_NAME, DOMAIN, MANUFACTURER, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -203,10 +203,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
 
                 lib_version = await self.hass.async_add_executor_job(pkg_version, "hdmimatrix")
                 self.device_info = {
-                    "name": f"AVGear Matrix {self.short_id}",
                     "model": name,
                     "type": device_type,
-                    "manufacturer": "AVGear",
                     "version": version,
                     "lib_version": lib_version,
                 }
@@ -216,9 +214,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             except Exception as err:
                 _LOGGER.warning("Could not get device info: %s", err)
                 self.device_info = {
-                    "name": "Unknown",
                     "model": "Unknown",
-                    "manufacturer": "AVGear",
+                    "type": "Unknown",
                     "version": "Unknown",
                     "lib_version": "Unknown",
                 }
@@ -230,10 +227,9 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
         info = self.device_info or {}
         return DeviceInfo(
             identifiers={(DOMAIN, self.device_id)},
-            manufacturer="AVGear",
-            name=info.get("name", "AVGear Matrix"),
+            manufacturer=MANUFACTURER,
+            name=f"{DEVICE_NAME} {self.short_id}",
             model=info.get("model"),
-            sw_version=f"{info.get('version', 'Unknown')} (hdmimatrix {info.get('lib_version', 'Unknown')})",
             configuration_url=f"http://{self.host}",
         )
 

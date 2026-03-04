@@ -32,6 +32,16 @@ SENSOR_DESCRIPTIONS = [
         translation_key="num_outputs",
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
+    SensorEntityDescription(
+        key="firmware_version",
+        translation_key="firmware_version",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="lib_version",
+        translation_key="lib_version",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
 ]
 
 
@@ -72,4 +82,8 @@ class AvgearMatrixSensor(CoordinatorEntity, SensorEntity):
             return self.coordinator.num_inputs
         if self.entity_description.key == "num_outputs":
             return self.coordinator.num_outputs
+        if self.entity_description.key == "firmware_version":
+            return info.get("version")
+        if self.entity_description.key == "lib_version":
+            return info.get("lib_version")
         return None
