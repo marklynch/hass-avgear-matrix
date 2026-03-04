@@ -1,21 +1,38 @@
 {
     "config": {
+        "abort": {
+            "already_configured": "Cet appareil est déjà configuré"
+        },
         "error": {
-            "cannot_connect": "Échec de la connexion",
-            "unsupported_model": "Le modèle n'est actuellement pas pris en charge"
+            "cannot_connect": "Échec de la connexion"
         },
         "step": {
             "user": {
                 "data": {
                 },
                 "data_description": {
-                    "host": "Le nom d'hôte ou l'adresse IP de votre appareil matrice AVGear."
+                    "host": "Le nom d'hôte ou l'adresse IP de votre appareil matrice AVGear.",
+                    "port": "Le port TCP de votre appareil matrice AVGear (par défaut 4001)."
                 },
                 "description": "Configurez les détails de connexion de votre matrice AVGear."
             }
         }
     },
     "entity": {
+        "sensor": {
+            "device_name": {
+                "name": "Nom"
+            },
+            "device_type": {
+                "name": "Type"
+            },
+            "num_inputs": {
+                "name": "Entrées"
+            },
+            "num_outputs": {
+                "name": "Sorties"
+            }
+        },
         "select": {
             "matrix_output": {
                 "name": "Sortie {number}"

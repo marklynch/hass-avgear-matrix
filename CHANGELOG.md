@@ -9,8 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add install buttons to README.md
 - Added CLAUDE.md file
+- Prevent duplicate configuration entries for the same device IP and port
+- Port field added to config flow with default of 4001
+- Diagnostic sensors for device name, type, number of inputs, and number of outputs
+- Input and output counts are now queried from the device directly
+- HdBT power switch is hidden on models that do not support HdBT (e.g. HDMI Matrix)
+
 ### Removed
+- Removed `SUPPORTED_MODELS` — any AVGear Matrix device that responds is now supported
+
 ### Changed
+- Config entry title changed from raw IP address to `AVGear Matrix (IP:port)` for clarity
+
 ### Fixed
 
 

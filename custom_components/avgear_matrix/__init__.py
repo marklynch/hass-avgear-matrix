@@ -11,7 +11,7 @@ import logging
 from .const import DOMAIN
 from .coordinator import AVGearMatrixConfigEntry, AVGearMatrixDataUpdateCoordinator
 
-PLATFORMS = [Platform.SELECT, Platform.SWITCH]
+PLATFORMS = [Platform.SELECT, Platform.SENSOR, Platform.SWITCH]
 
 _LOGGER = logging.getLogger(__name__)
 

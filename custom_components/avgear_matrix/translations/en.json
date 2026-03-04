@@ -1,21 +1,38 @@
 {
     "config": {
+        "abort": {
+            "already_configured": "This device is already configured"
+        },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "unsupported_model": "Model is not currently supported"
+            "cannot_connect": "Failed to connect"
         },
         "step": {
             "user": {
                 "data": {
                 },
                 "data_description": {
-                    "host": "The hostname or IP address of your AVGear Matrix device."
+                    "host": "The hostname or IP address of your AVGear Matrix device.",
+                    "port": "The TCP port of your AVGear Matrix device (default 4001)."
                 },
                 "description": "Set up your AVGear Matrix connection details."
             }
         }
     },
     "entity": {
+        "sensor": {
+            "device_name": {
+                "name": "Name"
+            },
+            "device_type": {
+                "name": "Type"
+            },
+            "num_inputs": {
+                "name": "Inputs"
+            },
+            "num_outputs": {
+                "name": "Outputs"
+            }
+        },
         "select":{
             "matrix_output": {
                 "name": "Output {number}"

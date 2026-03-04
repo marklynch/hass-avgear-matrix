@@ -13,7 +13,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN, SCAN_INTERVAL, SUPPORTED_MODELS
+from .const import DOMAIN, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -180,19 +180,22 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
                 # Load static info from device
                 async with self._lock, self.matrix:
                     name = await self.matrix.get_device_name()
+                    device_type = await self.matrix.get_device_type()
                     version = await self.matrix.get_device_version()
+                    input_status = await self.matrix.get_input_status_parsed()
 
                 lib_version = await self.hass.async_add_executor_job(pkg_version, "hdmimatrix")
                 self.device_info = {
                     "name": "AVGear Matrix",
                     "model": name,
+                    "type": device_type,
                     "manufacturer": "AVGear",
                     "version": version,
                     "lib_version": lib_version,
                 }
-                if name in SUPPORTED_MODELS:
-                    self.num_inputs = SUPPORTED_MODELS[name]["inputs"]
-                    self.num_outputs = SUPPORTED_MODELS[name]["outputs"]
+                if input_status:
+                    self.num_inputs = len(input_status)
+                    self.num_outputs = len(input_status)
             except Exception as err:
                 _LOGGER.warning("Could not get device info: %s", err)
                 self.device_info = {

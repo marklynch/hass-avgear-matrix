@@ -15,19 +15,20 @@ from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import callback
 
-from .const import DEFAULT_PORT, DOMAIN, SUPPORTED_MODELS
+from .const import DEFAULT_PORT, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
+        vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
     }
 )
 
 
-async def _validate_connection(host: str) -> bool:
-    matrix = AsyncHDMIMatrix(host, DEFAULT_PORT)
+async def _validate_connection(host: str, port: int) -> bool:
+    matrix = AsyncHDMIMatrix(host, port)
 
     # Using async context manager
     async with matrix:
@@ -39,13 +40,8 @@ async def _validate_connection(host: str) -> bool:
         await asyncio.sleep(2)
 
         name = await matrix.get_device_name()
-        # check the name
         _LOGGER.debug("Device found: %s", name)
-        if name in SUPPORTED_MODELS:
-            return True
-
-    _LOGGER.debug("Device not supported: %s", name)
-    return False
+        return bool(name)
 
 
 class AVGearMatrixConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -57,10 +53,10 @@ class AVGearMatrixConfigFlow(ConfigFlow, domain=DOMAIN):
     def _async_get_entry(self, data: dict[str, Any]) -> ConfigFlowResult:
         _LOGGER.debug("_async_get_entry")
         return self.async_create_entry(
-            title=data[CONF_HOST],
+            title=f"AVGear Matrix ({data[CONF_HOST]}:{data[CONF_PORT]})",
             data={
                 CONF_HOST: data[CONF_HOST],
-                CONF_PORT: DEFAULT_PORT,
+                CONF_PORT: data[CONF_PORT],
             },
         )
 
@@ -74,9 +70,13 @@ class AVGearMatrixConfigFlow(ConfigFlow, domain=DOMAIN):
         errors = {}
 
         host = user_input[CONF_HOST]
+        port = user_input[CONF_PORT]
+
+        await self.async_set_unique_id(f"{host}:{port}")
+        self._abort_if_unique_id_configured()
 
         try:
-            result = await _validate_connection(host)
+            result = await _validate_connection(host, port)
             if not result:
                 errors["base"] = "unsupported_model"
         except OSError:

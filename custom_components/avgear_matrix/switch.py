@@ -31,10 +31,12 @@ async def async_setup_entry(
     """Set up the AVGear Switch platform."""
     coordinator = config_entry.runtime_data
 
+    device_type = (coordinator.device_info or {}).get("type", "")
     entities: list = [
         AvgearMatrixPowerSwitch(coordinator, POWER_SWITCH_DESCRIPTION),
-        AvgearMatrixHdbtPowerSwitch(coordinator, HDBT_POWER_SWITCH_DESCRIPTION),
     ]
+    if "HDBaseT" in device_type:
+        entities.append(AvgearMatrixHdbtPowerSwitch(coordinator, HDBT_POWER_SWITCH_DESCRIPTION))
     for output_num in range(1, coordinator.num_outputs + 1):
         entities.append(AvgearMatrixOutputSwitch(coordinator, output_num))
 

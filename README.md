@@ -15,12 +15,11 @@ It uses the [hdmimatrix python library](https://github.com/marklynch/hdmimatrix)
 
 * Follow the prompts.
 
-## Currently working
-* Setup of AVGear Matrix TMX44PRO AVK
-* Creation of device and entities
-* Select button to switch input and outputs.
-* Reads name, type and version numbers
-
-## Future work
-* Add more models (need assistance for testing)
+## Features
+* Supports any AVGear Matrix device
+* Route inputs to outputs via select entities per output
+* Per-output power switches
+* HdBT power switch
+* Master power switch
+* Diagnostic sensors for device name, type, and input count
 
