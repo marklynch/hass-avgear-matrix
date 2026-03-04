@@ -57,6 +57,11 @@ class AvgearMatrixSelect(CoordinatorEntity, SelectEntity):
         self._attr_device_info = coordinator.ha_device_info
 
     @property
+    def available(self) -> bool:
+        """Return true if the matrix is powered on."""
+        return bool(self.coordinator.is_powered_on)
+
+    @property
     def current_option(self):
         """Return the current input for this output."""
         current_input = self.coordinator.data.get(self.output_num)

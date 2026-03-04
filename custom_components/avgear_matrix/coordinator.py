@@ -98,6 +98,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             async with self._lock, self.matrix:
                 result = await self.matrix.power_on()
                 _LOGGER.debug("Power on result: %s", result)
+                if result:
+                    self.is_powered_on = True
                 return result
         except Exception as err:
             _LOGGER.error("Failed to power on matrix: %s", err)
@@ -109,6 +111,8 @@ class AVGearMatrixDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
             async with self._lock, self.matrix:
                 result = await self.matrix.power_off()
                 _LOGGER.debug("Power off result: %s", result)
+                if result:
+                    self.is_powered_on = False
                 return result
         except Exception as err:
             _LOGGER.error("Failed to power off matrix: %s", err)

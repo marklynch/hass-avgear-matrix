@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Diagnostic sensors for device name, type, number of inputs, number of outputs, firmware version, and library version
 - Input and output counts are now queried from the device directly
 - HdBT power switch is hidden on models that do not support HdBT (e.g. HDMI Matrix)
+- All controls become unavailable when the main power switch is turned off
+
+### Fixed
+- Power switch briefly reverts to previous state after toggling — fixed with optimistic state update
 
 ### Removed
 - Removed `SUPPORTED_MODELS` — any AVGear Matrix device that responds is now supported
@@ -22,9 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Config entry title changed from raw IP address to `AVGear Matrix (IP:port)` for clarity
 - ⚠️ **Breaking**: Device name now includes a Crockford Base32 identifier derived from the IP and port (e.g. `AVGear Matrix 3GX00BH0`) to ensure unique entity IDs when multiple devices are configured. Existing scripts, automations, and dashboards referencing entity IDs will need to be updated.
-
-### Fixed
-
 
 ## [0.4.0] - 2026-03-03
 ### Added

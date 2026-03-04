@@ -90,6 +90,11 @@ class AvgearMatrixHdbtPowerSwitch(CoordinatorEntity, SwitchEntity):
         self._attr_device_info = coordinator.ha_device_info
 
     @property
+    def available(self) -> bool:
+        """Return true if the matrix is powered on."""
+        return bool(self.coordinator.is_powered_on)
+
+    @property
     def is_on(self) -> bool | None:
         """Return true if HdBT is powered on."""
         return self.coordinator.is_hdbt_powered_on
@@ -123,6 +128,11 @@ class AvgearMatrixOutputSwitch(CoordinatorEntity, SwitchEntity):
         self._attr_translation_key = "output_power"
         self._attr_translation_placeholders = {"number": str(output_num)}
         self._attr_device_info = coordinator.ha_device_info
+
+    @property
+    def available(self) -> bool:
+        """Return true if the matrix is powered on."""
+        return bool(self.coordinator.is_powered_on)
 
     @property
     def is_on(self) -> bool | None:
